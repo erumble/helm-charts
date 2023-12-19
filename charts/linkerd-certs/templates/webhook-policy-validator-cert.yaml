@@ -14,4 +14,9 @@ spec:
   commonName: {{ .Values.policyValidator.commonName }}
   dnsNames:
     {{- append .Values.policyValidator.extraDnsNames .Values.policyValidator.commonName | toYaml | nindent 4 }}
-  {{- .Values.stdCertConfig | toYaml | nindent 2 }}
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+    encoding: PKCS8
+  usages:
+  - server auth
