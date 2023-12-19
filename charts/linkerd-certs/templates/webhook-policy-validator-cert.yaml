@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.policyValidator.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  secretName: {{ .Values.policyValidator.secretName }}
+  duration: {{ .Values.policyValidator.duration }}
+  renewBefore: {{ .Values.policyValidator.renewBefore }}
+  issuerRef:
+    name: {{ .Values.webhook.name }}
+    kind: Issuer
+  commonName: {{ .Values.policyValidator.commonName }}
+  dnsNames:
+    {{- append .Values.policyValidator.extraDnsNames .Values.policyValidator.commonName | toYaml | nindent 4 }}
+  {{- .Values.stdCertConfig | toYaml | nindent 2 }}

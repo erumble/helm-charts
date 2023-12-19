@@ -1,0 +1,28 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.trustAnchor.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  secretName: {{ .Values.trustAnchor.secretName }}
+  duration: {{ .Values.trustAnchor.duration }}
+  renewBefore: {{ .Values.trustAnchor.renewBefore }}
+  issuerRef:
+    name: {{ .Values.selfsignedIssuer.name }}
+    kind: Issuer
+  commonName: {{ .Values.trustAnchor.commonName }}
+  dnsNames:
+    {{- append .Values.trustAnchor.extraDnsNames .Values.trustAnchor.commonName | toYaml | nindent 4 }}
+  {{- .Values.caCertConfig | toYaml | nindent 2 }}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Values.trustAnchor.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  ca:
+    secretName: {{ .Values.trustAnchor.secretName }}
