@@ -10,47 +10,47 @@ trustAnchor:
   extraDnsNames: []
   duration: 87600h
   name: linkerd-trust-anchor
-  renewBefore: 25h
+  renewBefore: 2160h
   secretName: linkerd-trust-anchor
 
 identity:
   commonName: identity.linkerd.cluster.local
   extraDnsNames: []
-  duration: 48h
+  duration: 4320h
   name: linkerd-identity-issuer
-  renewBefore: 25h
+  renewBefore: 336h
   secretName: linkerd-identity-issuer
 
 webhook:
   commonName:  webhook.linkerd.cluster.local
   extraDnsNames: []
-  duration: 48h
+  duration: 4320h
   name: linkerd-webhook-issuer
-  renewBefore: 25h
+  renewBefore: 336h
   secretName: linkerd-webhook-issuer
 
 policyValidator:
   commonName:  linkerd-policy-validator.linkerd.svc
   extraDnsNames: []
-  duration: 24h
+  duration: 2160h
   name: linkerd-policy-validator
-  renewBefore: 1h
+  renewBefore: 168h
   secretName: linkerd-policy-validator-k8s-tls
 
 proxyInjector:
   commonName:  linkerd-proxy-injector.linkerd.svc
   extraDnsNames: []
-  duration: 24h
+  duration: 2160h
   name: linkerd-proxy-injector
-  renewBefore: 1h
+  renewBefore: 168h
   secretName: linkerd-proxy-injector-k8s-tls
 
 spValidator:
   commonName:  linkerd-sp-validator.linkerd.svc
   extraDnsNames: []
-  duration: 24h
+  duration: 2160h
   name: linkerd-sp-validator
-  renewBefore: 1h
+  renewBefore: 168h
   secretName: linkerd-sp-validator-k8s-tls
 
 caCertConfig:
