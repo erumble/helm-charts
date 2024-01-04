@@ -2,6 +2,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# clusterResourceNamespace defines where Cert Manager looks for ClusterIssuer secrets
+clusterResourceNamespace: cert-manager
+
 selfsignedIssuer:
   name: linkerd-selfsigned-issuer
 

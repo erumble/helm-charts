@@ -3,6 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ .Values.webhook.name }}
+  namespace: {{ .Values.clusterResourceNamespace }}
   labels:
     {{- include "linkerd-certs.labels" . | nindent 4 }}
 spec:
