@@ -11,7 +11,7 @@ spec:
   renewBefore: {{ .Values.trustAnchor.renewBefore }}
   issuerRef:
     name: {{ .Values.selfsignedIssuer.name }}
-    kind: Issuer
+    kind: ClusterIssuer
   commonName: {{ .Values.trustAnchor.commonName }}
   dnsNames:
     {{- append .Values.trustAnchor.extraDnsNames .Values.trustAnchor.commonName | toYaml | nindent 4 }}
