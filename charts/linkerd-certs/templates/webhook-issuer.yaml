@@ -12,7 +12,7 @@ spec:
   renewBefore: {{ .Values.webhook.renewBefore }}
   issuerRef:
     name: {{ .Values.selfsignedIssuer.name }}
-    kind: Issuer
+    kind: ClusterIssuer
   commonName: {{ .Values.webhook.commonName }}
   dnsNames:
     {{- append .Values.webhook.extraDnsNames .Values.webhook.commonName | toYaml | nindent 4 }}
