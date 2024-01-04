@@ -18,7 +18,7 @@ spec:
   {{- .Values.caCertConfig | toYaml | nindent 2 }}
 ---
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: {{ .Values.webhook.name }}
   labels:

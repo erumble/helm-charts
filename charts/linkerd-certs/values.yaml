@@ -3,7 +3,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 selfsignedIssuer:
-  name: selfsigned
+  name: linkerd-selfsigned-issuer
 
 trustAnchor:
   commonName: root.linkerd.cluster.local
