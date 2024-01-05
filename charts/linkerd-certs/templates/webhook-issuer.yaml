@@ -2,28 +2,35 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ .Values.webhook.name }}
+  name: {{ required "Webhook issuer name is required." .Values.webhook.issuer.name }}
   namespace: {{ .Values.clusterResourceNamespace }}
   labels:
     {{- include "linkerd-certs.labels" . | nindent 4 }}
 spec:
-  secretName: {{ .Values.webhook.secretName }}
-  duration: {{ .Values.webhook.duration }}
-  renewBefore: {{ .Values.webhook.renewBefore }}
   issuerRef:
     name: {{ .Values.selfsignedIssuer.name }}
     kind: ClusterIssuer
-  commonName: {{ .Values.webhook.commonName }}
+  secretName: {{ .Values.webhook.issuer.secretName }}
+  duration: {{ default "4320h" .Values.webhook.issuer.duration }}
+  renewBefore: {{ default "336h" .Values.webhook.issuer.renewBefore }}
+  commonName: {{ .Values.webhook.issuer.commonName }}
   dnsNames:
-    {{- append .Values.webhook.extraDnsNames .Values.webhook.commonName | toYaml | nindent 4 }}
-  {{- .Values.caCertConfig | toYaml | nindent 2 }}
+    {{- append (default (list) .Values.webhook.issuer.extraDnsNames) .Values.webhook.issuer.commonName | toYaml | nindent 4 }}
+  isCA: true
+  privateKey:
+    algorithm: ECDSA
+  usages:
+    - cert sign
+    - crl sign
+    - server auth
+    - client auth
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{ .Values.webhook.name }}
+  name: {{ .Values.webhook.issuer.name }}
   labels:
     {{- include "linkerd-certs.labels" . | nindent 4 }}
 spec:
   ca:
-    secretName: {{ .Values.webhook.secretName }}
+    secretName: {{ .Values.webhook.issuer.secretName }}

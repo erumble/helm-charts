@@ -1,0 +1,33 @@
+{{- range $_, $cert := .Values.webhook.certs -}}
+{{- if ne (toString $cert.enabled) "false" }}
+{{- $commonName := default (printf "%s.%s.svc" $cert.name (default $.Release.Namespace $cert.namespace)) $cert.commonName }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ required "A certificate.name is required." $cert.name }}
+  {{- if $cert.namespace }}
+  namespace: {{ $cert.namespace }}
+  {{- end }}
+  labels:
+    {{- include "linkerd-certs.labels" $ | nindent 4 }}
+spec:
+  issuerRef:
+    name: {{ $.Values.webhook.issuer.name }}
+    kind: ClusterIssuer
+  secretName: {{ default (printf "%s-k8s-tls" $cert.name) $cert.secretName }}
+  duration: {{ default "2160h" $cert.duration }}
+  renewBefore: {{ default "168h" $cert.renewBefore }}
+  commonName: {{ $commonName }}
+  dnsNames:
+    {{- append (default (list) $cert.extraDnsNames) $commonName | toYaml | nindent 4 }}
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+    {{- if $cert.encoding }}
+    encoding: {{ $cert.encoding }}
+    {{- end }}
+  usages:
+    - server auth
+{{ end }}
+{{- end }}

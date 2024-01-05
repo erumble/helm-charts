@@ -49,3 +49,17 @@ Selector labels
 app.kubernetes.io/name: {{ include "linkerd-certs.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Certificate Name
+*/}}
+{{- define "linkerd-certs.certName" -}}
+{{- trimSuffix "-cert" . | printf "%s-cert" | trim }}
+{{- end }}
+
+{{/*
+Issuer Name
+*/}}
+{{- define "linkerd-certs.issuerName" -}}
+{{- trimSuffix "-issuer" . | printf "%s-issuer" | trim }}
+{{- end }}

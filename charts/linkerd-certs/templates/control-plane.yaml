@@ -1,0 +1,60 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.controlPlane.trustAnchor.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  issuerRef:
+    name: {{ .Values.selfsignedIssuer.name }}
+    kind: ClusterIssuer
+  secretName: {{ .Values.controlPlane.trustAnchor.secretName }}
+  duration: {{ default "87600h" .Values.controlPlane.trustAnchor.duration }}
+  renewBefore: {{ default "2160h" .Values.controlPlane.trustAnchor.renewBefore }}
+  commonName: {{ .Values.controlPlane.trustAnchor.commonName }}
+  dnsNames:
+    {{- append (default (list) .Values.controlPlane.trustAnchor.extraDnsNames) .Values.controlPlane.trustAnchor.commonName | toYaml | nindent 4 }}
+  isCA: true
+  privateKey:
+    algorithm: ECDSA
+  usages:
+    - cert sign
+    - crl sign
+    - server auth
+    - client auth
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .Values.controlPlane.trustAnchor.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  ca:
+    secretName: {{ .Values.controlPlane.trustAnchor.secretName }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.controlPlane.identity.name }}
+  labels:
+    {{- include "linkerd-certs.labels" . | nindent 4 }}
+spec:
+  issuerRef:
+    name: {{ .Values.controlPlane.trustAnchor.name }}
+    kind: Issuer
+  secretName: {{ .Values.controlPlane.identity.secretName }}
+  duration: {{ default "4320h" .Values.controlPlane.identity.duration }}
+  renewBefore: {{ default "336h" .Values.controlPlane.identity.renewBefore }}
+  commonName: {{ .Values.controlPlane.identity.commonName }}
+  dnsNames:
+    {{- append (default (list) .Values.controlPlane.identity.extraDnsNames) .Values.controlPlane.identity.commonName | toYaml | nindent 4 }}
+  isCA: true
+  privateKey:
+    algorithm: ECDSA
+  usages:
+    - cert sign
+    - crl sign
+    - server auth
+    - client auth

@@ -6,69 +6,44 @@ fullnameOverride: ""
 clusterResourceNamespace: cert-manager
 
 selfsignedIssuer:
-  name: linkerd-selfsigned-issuer
+  name: linkerd-selfsigned
 
-trustAnchor:
-  commonName: root.linkerd.cluster.local
-  extraDnsNames: []
-  duration: 87600h
-  name: linkerd-trust-anchor
-  renewBefore: 2160h
-  secretName: linkerd-trust-anchor
+controlPlane:
+  trustAnchor:
+    name: linkerd-trust-anchor
+    commonName: root.linkerd.cluster.local
+    secretName: linkerd-trust-anchor
 
-identity:
-  commonName: identity.linkerd.cluster.local
-  extraDnsNames: []
-  duration: 4320h
-  name: linkerd-identity-issuer
-  renewBefore: 336h
-  secretName: linkerd-identity-issuer
+  identity:
+    name: linkerd-identity
+    commonName: identity.linkerd.cluster.local
+    secretName: linkerd-identity
 
 webhook:
-  commonName:  webhook.linkerd.cluster.local
-  extraDnsNames: []
-  duration: 4320h
-  name: linkerd-webhook-issuer
-  renewBefore: 336h
-  secretName: linkerd-webhook-issuer
+  issuer:
+    name: linkerd-webhook-trust-anchor
+    commonName: webhook.linkerd.cluster.local
+    secretName: linkerd-webhook-trust-anchor
 
-policyValidator:
-  commonName:  linkerd-policy-validator.linkerd.svc
-  extraDnsNames: []
-  duration: 2160h
-  name: linkerd-policy-validator
-  renewBefore: 168h
-  secretName: linkerd-policy-validator-k8s-tls
+  certs:
+    policyValidator:
+      name: linkerd-policy-validator
+      encoding: PKCS8
 
-proxyInjector:
-  commonName:  linkerd-proxy-injector.linkerd.svc
-  extraDnsNames: []
-  duration: 2160h
-  name: linkerd-proxy-injector
-  renewBefore: 168h
-  secretName: linkerd-proxy-injector-k8s-tls
+    proxyInjector:
+      name: linkerd-proxy-injector
 
-spValidator:
-  commonName:  linkerd-sp-validator.linkerd.svc
-  extraDnsNames: []
-  duration: 2160h
-  name: linkerd-sp-validator
-  renewBefore: 168h
-  secretName: linkerd-sp-validator-k8s-tls
+    spValidator:
+      name: linkerd-sp-validator
 
-caCertConfig:
-  isCA: true
-  privateKey:
-    algorithm: ECDSA
-  usages:
-    - cert sign
-    - crl sign
-    - server auth
-    - client auth
+    jaegerInjector:
+      name: jaeger-injector
+      namespace: linkerd-jaeger
 
-stdCertConfig:
-  isCA: false
-  privateKey:
-    algorithm: ECDSA
-  usages:
-    - server auth
+    vizTap:
+      name: tap
+      namespace: linkerd-viz
+
+    vizTapInjector:
+      name: tap-injector
+      namespace: linkerd-viz
