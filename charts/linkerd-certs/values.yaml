@@ -17,7 +17,7 @@ controlPlane:
   identity:
     name: linkerd-identity
     commonName: identity.linkerd.cluster.local
-    secretName: linkerd-identity
+    secretName: linkerd-identity-issuer
 
 webhook:
   issuer:
