@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   linkerd-certs:
   - apiVersion: v2
+    created: "2024-01-05T01:57:17.944913734Z"
+    description: Create cert-manager resources for Linkerd
+    digest: ce5fea37455a2d423fd43a1241f85948e0eb3b539887dffb64963a545659a9a8
+    name: linkerd-certs
+    type: application
+    urls:
+    - https://github.com/erumble/helm-charts/releases/download/linkerd-certs-2.0.1/linkerd-certs-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v2
     created: "2024-01-05T00:22:15.757032289Z"
     description: Create cert-manager resources for Linkerd
     digest: dcf0faae34a7ed8398c5156dd1c55d811371bbe3e6e7b507a98116df810564eb
@@ -73,4 +82,4 @@ entries:
     urls:
     - https://github.com/erumble/helm-charts/releases/download/linkerd-certs-0.1.0/linkerd-certs-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-05T00:22:15.757162584Z"
+generated: "2024-01-05T01:57:17.945054806Z"
